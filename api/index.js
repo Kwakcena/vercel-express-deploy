@@ -1,5 +1,11 @@
-const app = require('express')();
+const express = require('express');
 const { v4 } = require('uuid');
+
+const app = express();
+app.set('port', process.env.PORT || 3000);
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 app.get('/api', (req, res) => {
   const path = `/api/item/${v4()}`;
@@ -12,5 +18,9 @@ app.get('/api/item/:slug', (req, res) => {
   const { slug } = req.params;
   res.end(`Item: ${slug}`);
 });
+
+app.listen(app.get('port'), () => {
+  console.log(app.get('port'), "번 포트에서 대기 중");
+})
 
 module.exports = app;
